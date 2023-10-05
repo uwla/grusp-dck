@@ -39,7 +39,7 @@ services:
             - ${DIR_ADM}:/app
         working_dir: /app
         user: node
-        command: "${CMD_ADM}"
+        command: ${CMD_ADM}
         depends_on:
             - api
         networks:
@@ -65,6 +65,12 @@ services:
             LARAVEL_SAIL: 1
             XDEBUG_MODE: 'off'
             XDEBUG_CONFIG: 'client_host=host.docker.internal'
+            DB_CONNECTION: mysql
+            DB_HOST: database
+            DB_PORT: 3306
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ${DIR_API}:/var/www/html
             - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
@@ -78,8 +84,6 @@ services:
     database:
         container_name: sql.grusp.test
         image: mysql:8.0
-        ports:
-            - 3306:3306
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_PASSWORD: ${DB_PASSWORD}
